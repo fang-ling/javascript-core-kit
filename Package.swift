@@ -2,7 +2,7 @@
 
 //
 //  Package.swift
-//  javascript-bridge-framework
+//  javascript-core-kit
 //
 //  Created by Fang Ling on 2026/4/4.
 //
@@ -21,28 +21,31 @@
 
 import PackageDescription
 
+let isDevelopment = false
+
 let dependencies = [
-  ("https://github.com/fang-ling/foundation-framework", "snapshot")
+  ("c-kit", "main")
 ]
 
 let package = Package(
-  name: "JavaScriptBridgeFramework",
+  name: "javascript-core-kit",
   products: [
-    .library(
-      name: "JavaScriptBridgeFramework",
-      targets: ["JavaScriptBridgeFramework"]
-    )
+    .library(name: "JavaScriptCoreKit", targets: ["JavaScriptCoreKit"])
   ],
-  dependencies: dependencies.map({ .package(url: $0.0, branch: $0.1) }),
+  dependencies: dependencies.map({
+    if isDevelopment {
+      return .package(path: "../\($0.0)")
+    } else {
+      return .package(url: "https://github.com/fang-ling/\($0.0)", branch: $0.1)
+    }
+  }),
   targets: [
     .target(
-      name: "JavaScriptBridgeFramework",
+      name: "JavaScriptCoreKit",
       dependencies: [
-        .product(name: "FoundationFramework", package: "foundation-framework")
+        .product(name: "CKit", package: "c-kit")
       ],
-      swiftSettings: [
-        .enableExperimentalFeature("Extern")
-      ]
+      publicHeadersPath: "Includes"
     )
   ]
 )
