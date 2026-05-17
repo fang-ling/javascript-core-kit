@@ -20,6 +20,7 @@
 let _instance
 let _memory
 let nodes
+let nodeIndex
 let eventListeners
 
 function readString(string, count) {
@@ -39,33 +40,36 @@ function getNode(nodeID) {
   return nodes.get(nodeID)
 }
 
-//function _JavaScriptCore_Element_Initialize(elementType) {
-//  const element = document.createElement(elementType)
-//  element.className = "view"
-//  elements.push(element)
-//
-//  return elements.length
-//}
+function JavaScriptCoreNodeInitialize(nodeType) {
+  nodeIndex += 1
 
-//export function JavaScriptCore_Initialize(instance, memory) {
-//  _instance = instance
-//  _memory = memory
-//  elements = []
-//  eventListeners = new Map()
-//}
+  const node = document.createElement(nodeType)
+  node.className = "view"
+  nodes.set(nodeIndex, node)
 
-//export function JavaScriptCore_Element_InitializeDivision() {
-//  return _JavaScriptCore_Element_Initialize("div")
-//}
-//
-//export function JavaScriptBridge_GetWindowWidth() {
-//  return window.innerWidth
-//}
-//
-//export function JavaScriptBridge_GetWindowHeight() {
-//  return window.innerHeight
-//}
-//
+  return nodeIndex
+}
+
+export function JavaScriptCoreInitialize(instance, memory) {
+  _instance = instance
+  _memory = memory
+  nodes = new Map()
+  nodeIndex = 0
+  eventListeners = new Map()
+}
+
+export function JavaScriptCoreNodeInitializeDivisionNode() {
+  return JavaScriptCoreNodeInitialize("div")
+}
+
+export function JavaScriptCoreWindowGetWidth() {
+  return window.innerWidth
+}
+
+export function JavaScriptCoreWindowGetHeight() {
+  return window.innerHeight
+}
+
 //export function JavaScriptBridge_MeasureTextSize(
 //  textString,
 //  textStringCount,
@@ -90,39 +94,23 @@ function getNode(nodeID) {
 //
 //  element.remove()
 //}
-//
-//export function JavaScriptBridge_SetElementStyleProperty(
-//  elementIDString,
-//  elementIDStringCount,
-//  propertyString,
-//  propertyStringCount,
-//  valueString,
-//  valueStringCount
-//) {
-//  const elementID = readString(elementIDString, elementIDStringCount)
-//
-//  getElement(elementID)?.style.setProperty(
-//    readString(propertyString, propertyStringCount),
-//    readString(valueString, valueStringCount)
-//  )
-//}
-//
-//export function JavaScriptBridge_RemoveElementStyleProperty(
-//  elementIDString,
-//  elementIDStringCount,
-//  propertyString,
-//  propertyStringCount
-//) {
-//  const elementID = readString(elementIDString, elementIDStringCount)
-//
-//  getElement(elementID)?.style.removeProperty(
-//    readString(propertyString, propertyStringCount)
-//  )
-//}
 
-export function JavaScriptCoreDOMNodeAddSubnode(nodeID, subnodeID) {
-  const node = getElement(nodeID)
-  const subnode = getElement(subnodeID)
+export function JavaScriptCoreNodeUpdateStyleProperty(
+  nodeID,
+  propertyBuffer,
+  propertyBufferCount,
+  valueBuffer,
+  valueBufferCount
+) {
+  getNode(nodeID)?.style.setProperty(
+    readString(propertyBuffer, propertyBufferCount),
+    readString(valueBuffer, valueBufferCount)
+  )
+}
+
+export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
+  const node = getNode(nodeID)
+  const subnode = getNode(subnodeID)
 
   node.appendChild(subnode)
 }

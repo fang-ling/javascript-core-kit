@@ -24,7 +24,9 @@ import PackageDescription
 let isDevelopment = false
 
 let dependencies = [
-  ("c-kit", "main")
+  ("c-kit", "main"),
+  ("foundation-kit", "main"),
+  ("objective-c-kit", "main")
 ]
 
 let package = Package(
@@ -43,9 +45,15 @@ let package = Package(
     .target(
       name: "JavaScriptCoreKit",
       dependencies: [
-        .product(name: "CKit", package: "c-kit")
+        .product(name: "CKit", package: "c-kit"),
+        .product(name: "FoundationKit", package: "foundation-kit"),
+        .product(name: "ObjectiveCKit", package: "objective-c-kit")
       ],
-      publicHeadersPath: "Includes"
+      publicHeadersPath: "Includes",
+      cSettings: [
+        .unsafeFlags(["-fobjc-runtime=objfw-1.5"], .when(platforms: [.wasi])),
+        .unsafeFlags(["-fobjc-arc"])
+      ]
     )
   ]
 )

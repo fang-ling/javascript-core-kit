@@ -22,9 +22,6 @@
 
 #include <CKit/CKit.h>
 
-extern void JavaScriptCoreDOMNodeAddSubnode(
-  CUnsignedInteger32 nodeID,
-  CUnsignedInteger32 subnodeID
-);
+#import "../../JavaScriptCoreContext.h"
 
 #endif /* JavaScriptCoreKit_h */
