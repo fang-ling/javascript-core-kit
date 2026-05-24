@@ -58,16 +58,20 @@ export function JavaScriptCoreInitialize(instance, memory) {
   eventListeners = new Map()
 }
 
-export function JavaScriptCoreNodeInitializeDivisionNode() {
-  return JavaScriptCoreNodeInitialize("div")
-}
-
 export function JavaScriptCoreWindowGetWidth() {
   return window.innerWidth
 }
 
 export function JavaScriptCoreWindowGetHeight() {
   return window.innerHeight
+}
+
+export function JavaScriptCoreNodeInitializeDivisionNode() {
+  return JavaScriptCoreNodeInitialize("div")
+}
+
+export function JavaScriptCoreNodeInitializeParagraphNode() {
+  return JavaScriptCoreNodeInitialize("p")
 }
 
 //export function JavaScriptBridge_MeasureTextSize(
@@ -95,6 +99,13 @@ export function JavaScriptCoreWindowGetHeight() {
 //  element.remove()
 //}
 
+export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
+  const node = getNode(nodeID)
+  const subnode = getNode(subnodeID)
+
+  node.appendChild(subnode)
+}
+
 export function JavaScriptCoreNodeUpdateStyleProperty(
   nodeID,
   propertyBuffer,
@@ -108,24 +119,19 @@ export function JavaScriptCoreNodeUpdateStyleProperty(
   )
 }
 
-export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
+export function JavaScriptCoreNodeUpdateTextContent(
+  nodeID,
+  textContentBuffer,
+  textContentBufferCount
+) {
   const node = getNode(nodeID)
-  const subnode = getNode(subnodeID)
+  if (!node) {
+    return
+  }
 
-  node.appendChild(subnode)
+  node.textContent = readString(textContentBuffer, textContentBufferCount)
 }
 
-//export function JavaScriptBridge_UpdateElementTextContent(
-//  elementIDString,
-//  elementIDStringCount,
-//  textString,
-//  textStringCount
-//) {
-//  const elementID = readString(elementIDString, elementIDStringCount)
-//
-//  getElement(elementID).textContent = readString(textString, textStringCount)
-//}
-//
 //export function JavaScriptBridge_AddElementEventListener(
 //  elementIDString,
 //  elementIDStringCount,
