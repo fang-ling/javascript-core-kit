@@ -23,6 +23,8 @@ C_ASSUME_NONNULL_BEGIN
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeDivisionNode();
 
+extern CUnsignedInteger32 JavaScriptCoreNodeInitializeParagraphNode();
+
 extern void JavaScriptCoreNodeAddSubnode(
   CUnsignedInteger32 nodeID,
   CUnsignedInteger32 subnodeID
@@ -34,6 +36,12 @@ extern void JavaScriptCoreNodeUpdateStyleProperty(
   CUnsignedInteger64 propertyBufferCount,
   CInteger32* valueBuffer,
   CUnsignedInteger64 valueBufferCount
+);
+
+extern void JavaScriptCoreNodeUpdateTextContent(
+  CUnsignedInteger32 nodeID,
+  CInteger32* textContentBuffer,
+  CUnsignedInteger64 textContentBufferCount
 );
 
 extern CFloatingPoint64 JavaScriptCoreWindowGetWidth();
@@ -54,14 +62,18 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
   return JavaScriptCoreNodeInitializeDivisionNode();
 }
 
++ (CUnsignedInteger32)makeParagraphNode {
+  return JavaScriptCoreNodeInitializeParagraphNode();
+}
+
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID {
   JavaScriptCoreNodeAddSubnode(nodeID, subnodeID);
 }
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
-     styleProperty:(FoundationString *)property
-        styleValue:(FoundationString *)value {
+     styleProperty:(FoundationString*)property
+        styleValue:(FoundationString*)value {
   let propertyBuffer = (CInteger32*)CMemoryAllocate(
     property.count * sizeof(CInteger32)
   );
@@ -81,6 +93,22 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
 
   CMemoryDeallocate(propertyBuffer);
   CMemoryDeallocate(propertyBuffer);
+}
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
+       textContent:(FoundationString*)textContent {
+  let textContentBuffer = (CInteger32*)CMemoryAllocate(
+    textContent.count * sizeof(CInteger32)
+  );
+  [textContent copyCharacters:textContentBuffer];
+
+  JavaScriptCoreNodeUpdateTextContent(
+    nodeID,
+    textContentBuffer,
+    textContent.count
+  );
+
+  CMemoryDeallocate(textContentBuffer);
 }
 
 @end
@@ -116,14 +144,6 @@ C_ASSUME_NONNULL_END
 //  styleTextStringCount: UnsignedInteger64,
 //  result: UnsafeMutablePointer<FloatingPoint64>
 //)
-//@_extern(wasm, module: "env", name: "JavaScriptBridge_UpdateElementTextContent")
-//func JavaScriptBridge_UpdateElementTextContent(
-//  elementIDString: UnsafePointer<Integer32>,
-//  elementIDStringCount: UnsignedInteger64,
-//  textString: UnsafePointer<Integer32>,
-//  textStringCount: UnsignedInteger64
-//)
-//
 //@_extern(wasm, module: "env", name: "JavaScriptBridge_AddElementEventListener")
 //func JavaScriptBridge_AddElementEventListener(
 //  elementIDString: UnsafePointer<Integer32>,
@@ -163,17 +183,6 @@ C_ASSUME_NONNULL_END
 //      propertyStringCount: property.count,
 //    )
 //  }
-//  public static func updateElementTextContent(elementID: UUID, text: String) {
-//    let elementIDString = elementID.uuidString
-//
-//    JavaScriptBridge_UpdateElementTextContent(
-//      elementIDString: elementIDString.charactersView,
-//      elementIDStringCount: elementIDString.count,
-//      textString: text.charactersView,
-//      textStringCount: text.count
-//    )
-//  }
-//
 //  public static func addElementEventListener(
 //    elementID: UUID,
 //    eventTypeRawValue: UnsignedInteger32

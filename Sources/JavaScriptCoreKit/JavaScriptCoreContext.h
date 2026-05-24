@@ -38,12 +38,17 @@ C_ASSUME_NONNULL_BEGIN
 
 + (CUnsignedInteger32)makeDivisionNode;
 
++ (CUnsignedInteger32)makeParagraphNode;
+
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID;
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
      styleProperty:(FoundationString*)property
         styleValue:(FoundationString*)value;
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
+       textContent:(FoundationString*)textContent;
 
 @end
 
