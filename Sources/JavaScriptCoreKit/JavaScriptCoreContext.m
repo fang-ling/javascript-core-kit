@@ -21,9 +21,13 @@
 
 C_ASSUME_NONNULL_BEGIN
 
+extern CUnsignedInteger32 JavaScriptCoreNodeInitializeButtonNode();
+
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeDivisionNode();
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeParagraphNode();
+
+extern void JavaScriptCoreNodeAddClickEventListener(CUnsignedInteger32 nodeID);
 
 extern void JavaScriptCoreNodeAddSubnode(
   CUnsignedInteger32 nodeID,
@@ -58,12 +62,20 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
   return JavaScriptCoreWindowGetHeight();
 }
 
++ (CUnsignedInteger32)makeButtonNode {
+  return JavaScriptCoreNodeInitializeButtonNode();
+}
+
 + (CUnsignedInteger32)makeDivisionNode {
   return JavaScriptCoreNodeInitializeDivisionNode();
 }
 
 + (CUnsignedInteger32)makeParagraphNode {
   return JavaScriptCoreNodeInitializeParagraphNode();
+}
+
++ (void)addClickEventListenerForNode:(CUnsignedInteger32)nodeID {
+  JavaScriptCoreNodeAddClickEventListener(nodeID);
 }
 
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
@@ -115,14 +127,6 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
 
 C_ASSUME_NONNULL_END
 
-//#if canImport(Darwin)
-//import Darwin
-//#elseif canImport(WASILibc)
-//import WASILibc
-//#endif
-//
-//import FoundationFramework
-//
 //@_expose(wasm, "JavaScriptBridge_Allocate")
 //@_cdecl("JavaScriptBridge_Allocate")
 //@available(macOS 13.3.0, *)
@@ -144,13 +148,6 @@ C_ASSUME_NONNULL_END
 //  styleTextStringCount: UnsignedInteger64,
 //  result: UnsafeMutablePointer<FloatingPoint64>
 //)
-//@_extern(wasm, module: "env", name: "JavaScriptBridge_AddElementEventListener")
-//func JavaScriptBridge_AddElementEventListener(
-//  elementIDString: UnsafePointer<Integer32>,
-//  elementIDStringCount: UnsignedInteger64,
-//  eventType: UnsignedInteger32
-//)
-//
 //@available(macOS 13.3.0, *)
 //public enum JavaScriptBridge {
 //  public static func measureTextSize(
@@ -169,30 +166,5 @@ C_ASSUME_NONNULL_END
 //    )
 //
 //    return .init(width: result[0], height: result[1])
-//  }
-//  public static func removeElementStyleProperty(
-//    elementID: UUID,
-//    property: String
-//  ) {
-//    let elementIDString = elementID.uuidString
-//
-//    JavaScriptBridge_RemoveElementStyleProperty(
-//      elementIDString: elementIDString.charactersView,
-//      elementIDStringCount: elementIDString.count,
-//      propertyString: property.charactersView,
-//      propertyStringCount: property.count,
-//    )
-//  }
-//  public static func addElementEventListener(
-//    elementID: UUID,
-//    eventTypeRawValue: UnsignedInteger32
-//  ) {
-//    let elementIDString = elementID.uuidString
-//
-//    JavaScriptBridge_AddElementEventListener(
-//      elementIDString: elementIDString.charactersView,
-//      elementIDStringCount: elementIDString.count,
-//      eventType: eventTypeRawValue
-//    )
 //  }
 //}

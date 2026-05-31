@@ -36,9 +36,13 @@ C_ASSUME_NONNULL_BEGIN
 
 @property (class, nonatomic, readonly) CFloatingPoint64 windowHeight;
 
++ (CUnsignedInteger32)makeButtonNode;
+
 + (CUnsignedInteger32)makeDivisionNode;
 
 + (CUnsignedInteger32)makeParagraphNode;
+
++ (void)addClickEventListenerForNode:(CUnsignedInteger32)nodeID;
 
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID;

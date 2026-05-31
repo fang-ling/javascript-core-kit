@@ -66,6 +66,10 @@ export function JavaScriptCoreWindowGetHeight() {
   return window.innerHeight
 }
 
+export function JavaScriptCoreNodeInitializeButtonNode() {
+  return JavaScriptCoreNodeInitialize("button")
+}
+
 export function JavaScriptCoreNodeInitializeDivisionNode() {
   return JavaScriptCoreNodeInitialize("div")
 }
@@ -132,32 +136,15 @@ export function JavaScriptCoreNodeUpdateTextContent(
   node.textContent = readString(textContentBuffer, textContentBufferCount)
 }
 
-//export function JavaScriptBridge_AddElementEventListener(
-//  elementIDString,
-//  elementIDStringCount,
-//  eventType
-//) {
-//  const elementID = readString(elementIDString, elementIDStringCount)
-//  const eventTypeString = (() => {
-//    switch (eventType) {
-//      case 1: return "click" // touchUpInside
-//    }
-//  })()
-//
-//  const eventHandler = () => {
-//    const characters = [...elementID].map((c) => c.codePointAt(0))
-//    const buffer = _instance.exports.JavaScriptBridge_Allocate(144)
-//    new Uint32Array(_memory.buffer, buffer, 36).set(characters)
-//
-//    _instance.exports.UIFramework_DispatchElementEvent(buffer, 36n, eventType)
-//
-//    _instance.exports.JavaScriptBridge_Deallocate(buffer)
-//  }
-//
-//  if (!eventListeners.has(elementID)) {
-//    eventListeners.set(elementID, new Map())
-//  }
-//  eventListeners.get(elementID).set(eventType, eventHandler)
-//
-//  getElement(elementID)?.addEventListener(eventTypeString, eventHandler)
-//}
+export function JavaScriptCoreNodeAddClickEventListener(nodeID) {
+  if (!eventListeners.has(nodeID)) {
+    eventListeners.set(nodeID, new Map())
+  }
+
+  const eventHandler = () => {
+    _instance.exports.UIKitDispatchControlEvent(nodeID, 1)
+  }
+
+  eventListeners.get(nodeID).set("click", eventHandler)
+  getNode(nodeID)?.addEventListener("click", eventHandler)
+}
