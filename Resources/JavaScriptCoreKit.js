@@ -114,6 +114,19 @@ export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
   node.appendChild(subnode)
 }
 
+export function JavaScriptCoreNodeUpdateClassName(
+  nodeID,
+  classNameBuffer,
+  classNameBufferCount
+) {
+  const node = getNode(nodeID)
+  if (!node) {
+    return
+  }
+
+  node.className = readString(classNameBuffer, classNameBufferCount)
+}
+
 export function JavaScriptCoreNodeUpdateStyleProperty(
   nodeID,
   propertyBuffer,

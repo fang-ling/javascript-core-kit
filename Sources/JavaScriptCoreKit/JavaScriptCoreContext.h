@@ -50,6 +50,9 @@ C_ASSUME_NONNULL_BEGIN
            forNode:(CUnsignedInteger32)nodeID;
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
+         className:(FoundationString*)className;
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
      styleProperty:(FoundationString*)property
         styleValue:(FoundationString*)value;
 

@@ -44,6 +44,12 @@ extern void JavaScriptCoreNodeUpdateStyleProperty(
   CUnsignedInteger64 valueBufferCount
 );
 
+extern void JavaScriptCoreNodeUpdateClassName(
+  CUnsignedInteger32 nodeID,
+  CInteger32* classNameBuffer,
+  CInteger classNameBufferCount
+);
+
 extern void JavaScriptCoreNodeUpdateTextContent(
   CUnsignedInteger32 nodeID,
   CInteger32* textContentBuffer,
@@ -87,6 +93,22 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID {
   JavaScriptCoreNodeAddSubnode(nodeID, subnodeID);
+}
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
+         className:(FoundationString*)className {
+  let classNameBuffer = (CInteger32*)CMemoryAllocate(
+    className.count * sizeof(CInteger32)
+  );
+  [className copyCharacters:classNameBuffer];
+
+  JavaScriptCoreNodeUpdateClassName(
+    nodeID,
+    classNameBuffer,
+    className.count
+  );
+
+  CMemoryDeallocate(classNameBuffer);
 }
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
