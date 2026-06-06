@@ -78,6 +78,10 @@ export function JavaScriptCoreNodeInitializeParagraphNode() {
   return JavaScriptCoreNodeInitialize("p")
 }
 
+export function JavaScriptCoreNodeInitializeSpanNode() {
+  return JavaScriptCoreNodeInitialize("span")
+}
+
 //export function JavaScriptBridge_MeasureTextSize(
 //  textString,
 //  textStringCount,

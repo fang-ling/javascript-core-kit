@@ -42,6 +42,8 @@ C_ASSUME_NONNULL_BEGIN
 
 + (CUnsignedInteger32)makeParagraphNode;
 
++ (CUnsignedInteger32)makeSpanNode;
+
 + (void)addClickEventListenerForNode:(CUnsignedInteger32)nodeID;
 
 + (void)addSubnode:(CUnsignedInteger32)subnodeID

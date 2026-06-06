@@ -27,6 +27,8 @@ extern CUnsignedInteger32 JavaScriptCoreNodeInitializeDivisionNode();
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeParagraphNode();
 
+extern CUnsignedInteger32 JavaScriptCoreNodeInitializeSpanNode();
+
 extern void JavaScriptCoreNodeAddClickEventListener(CUnsignedInteger32 nodeID);
 
 extern void JavaScriptCoreNodeAddSubnode(
@@ -72,6 +74,10 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
 
 + (CUnsignedInteger32)makeParagraphNode {
   return JavaScriptCoreNodeInitializeParagraphNode();
+}
+
++ (CUnsignedInteger32)makeSpanNode {
+  return JavaScriptCoreNodeInitializeSpanNode();
 }
 
 + (void)addClickEventListenerForNode:(CUnsignedInteger32)nodeID {
