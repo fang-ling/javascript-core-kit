@@ -42,10 +42,15 @@ C_ASSUME_NONNULL_BEGIN
 
 + (CUnsignedInteger32)makeParagraphNode;
 
++ (CUnsignedInteger32)makeSpanNode;
+
 + (void)addClickEventListenerForNode:(CUnsignedInteger32)nodeID;
 
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID;
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
+         className:(FoundationString*)className;
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
      styleProperty:(FoundationString*)property

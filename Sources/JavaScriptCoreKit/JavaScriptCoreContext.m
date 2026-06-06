@@ -27,6 +27,8 @@ extern CUnsignedInteger32 JavaScriptCoreNodeInitializeDivisionNode();
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeParagraphNode();
 
+extern CUnsignedInteger32 JavaScriptCoreNodeInitializeSpanNode();
+
 extern void JavaScriptCoreNodeAddClickEventListener(CUnsignedInteger32 nodeID);
 
 extern void JavaScriptCoreNodeAddSubnode(
@@ -40,6 +42,12 @@ extern void JavaScriptCoreNodeUpdateStyleProperty(
   CUnsignedInteger64 propertyBufferCount,
   CInteger32* valueBuffer,
   CUnsignedInteger64 valueBufferCount
+);
+
+extern void JavaScriptCoreNodeUpdateClassName(
+  CUnsignedInteger32 nodeID,
+  CInteger32* classNameBuffer,
+  CInteger classNameBufferCount
 );
 
 extern void JavaScriptCoreNodeUpdateTextContent(
@@ -74,6 +82,10 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
   return JavaScriptCoreNodeInitializeParagraphNode();
 }
 
++ (CUnsignedInteger32)makeSpanNode {
+  return JavaScriptCoreNodeInitializeSpanNode();
+}
+
 + (void)addClickEventListenerForNode:(CUnsignedInteger32)nodeID {
   JavaScriptCoreNodeAddClickEventListener(nodeID);
 }
@@ -81,6 +93,22 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID {
   JavaScriptCoreNodeAddSubnode(nodeID, subnodeID);
+}
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
+         className:(FoundationString*)className {
+  let classNameBuffer = (CInteger32*)CMemoryAllocate(
+    className.count * sizeof(CInteger32)
+  );
+  [className copyCharacters:classNameBuffer];
+
+  JavaScriptCoreNodeUpdateClassName(
+    nodeID,
+    classNameBuffer,
+    className.count
+  );
+
+  CMemoryDeallocate(classNameBuffer);
 }
 
 + (void)updateNode:(CUnsignedInteger32)nodeID

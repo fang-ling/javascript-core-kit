@@ -78,6 +78,10 @@ export function JavaScriptCoreNodeInitializeParagraphNode() {
   return JavaScriptCoreNodeInitialize("p")
 }
 
+export function JavaScriptCoreNodeInitializeSpanNode() {
+  return JavaScriptCoreNodeInitialize("span")
+}
+
 //export function JavaScriptBridge_MeasureTextSize(
 //  textString,
 //  textStringCount,
@@ -108,6 +112,19 @@ export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
   const subnode = getNode(subnodeID)
 
   node.appendChild(subnode)
+}
+
+export function JavaScriptCoreNodeUpdateClassName(
+  nodeID,
+  classNameBuffer,
+  classNameBufferCount
+) {
+  const node = getNode(nodeID)
+  if (!node) {
+    return
+  }
+
+  node.className = readString(classNameBuffer, classNameBufferCount)
 }
 
 export function JavaScriptCoreNodeUpdateStyleProperty(
