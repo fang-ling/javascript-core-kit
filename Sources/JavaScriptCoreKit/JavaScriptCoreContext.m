@@ -60,6 +60,14 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetWidth();
 
 extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
 
+extern void JavaScriptCoreMeasureTextSize(
+  CInteger32* textBuffer,
+  CUnsignedInteger64 textBufferCount,
+  CInteger32* styleTextBuffer,
+  CUnsignedInteger64 styleTextBufferCount,
+  CFloatingPoint* result
+);
+
 @implementation JavaScriptCoreContext
 
 + (CFloatingPoint64)windowWidth {
@@ -68,6 +76,33 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
 
 + (CFloatingPoint64)windowHeight {
   return JavaScriptCoreWindowGetHeight();
+}
+
++ (CoreFoundationSize)measureTextSize:(FoundationString*)text
+                           styleText:(FoundationString*)styleText {
+  let textBuffer = (CInteger32*)CMemoryAllocate(
+    text.count * sizeof(CInteger32)
+  );
+  let styleTextBuffer = (CInteger32*)CMemoryAllocate(
+    styleText.count * sizeof(CInteger32)
+  );
+  [text copyCharacters:textBuffer];
+  [styleText copyCharacters:styleTextBuffer];
+
+  CFloatingPoint result[2] = { 0 };
+
+  JavaScriptCoreMeasureTextSize(
+    textBuffer,
+    text.count,
+    styleTextBuffer,
+    styleText.count,
+    result
+  );
+
+  CMemoryDeallocate(textBuffer);
+  CMemoryDeallocate(styleTextBuffer);
+
+  return CoreFoundationSizeMake(result[0], result[1]);
 }
 
 + (CUnsignedInteger32)makeButtonNode {
@@ -154,45 +189,3 @@ extern CFloatingPoint64 JavaScriptCoreWindowGetHeight();
 @end
 
 C_ASSUME_NONNULL_END
-
-//@_expose(wasm, "JavaScriptBridge_Allocate")
-//@_cdecl("JavaScriptBridge_Allocate")
-//@available(macOS 13.3.0, *)
-//func JavaScriptBridge_Allocate(size: Integer32) -> UnsafeMutableRawPointer {
-//  return malloc(Int(size))
-//}
-//
-//@_expose(wasm, "JavaScriptBridge_Deallocate")
-//@_cdecl("JavaScriptBridge_Deallocate")
-//@available(macOS 13.3.0, *)
-//func JavaScriptBridge_Deallocate(pointer: UnsafeMutableRawPointer) {
-//  free(pointer)
-//}
-//@_extern(wasm, module: "env", name: "JavaScriptBridge_MeasureTextSize")
-//func JavaScriptBridge_MeasureTextSize(
-//  textString: UnsafePointer<Integer32>,
-//  textStringCount: UnsignedInteger64,
-//  styleTextString: UnsafePointer<Integer32>,
-//  styleTextStringCount: UnsignedInteger64,
-//  result: UnsafeMutablePointer<FloatingPoint64>
-//)
-//@available(macOS 13.3.0, *)
-//public enum JavaScriptBridge {
-//  public static func measureTextSize(
-//    text: String,
-//    styleText: String
-//  ) -> Size {
-//    let result = UnsafeMutablePointer<FloatingPoint64>.allocate(capacity: 2)
-//    defer { result.deallocate() }
-//
-//    JavaScriptBridge_MeasureTextSize(
-//      textString: text.charactersView,
-//      textStringCount: text.count,
-//      styleTextString: styleText.charactersView,
-//      styleTextStringCount: styleText.count,
-//      result: result
-//    )
-//
-//    return .init(width: result[0], height: result[1])
-//  }
-//}

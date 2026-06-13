@@ -25,6 +25,7 @@ let isDevelopment = false
 
 let dependencies = [
   ("c-kit", "main"),
+  ("core-foundation-kit", "main"),
   ("foundation-kit", "main"),
   ("objective-c-kit", "main")
 ]
@@ -46,6 +47,7 @@ let package = Package(
       name: "JavaScriptCoreKit",
       dependencies: [
         .product(name: "CKit", package: "c-kit"),
+        .product(name: "CoreFoundationKit", package: "core-foundation-kit"),
         .product(name: "FoundationKit", package: "foundation-kit"),
         .product(name: "ObjectiveCKit", package: "objective-c-kit")
       ],
