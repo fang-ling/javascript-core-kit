@@ -18,6 +18,7 @@
  */
 
 #import <CKit/CKit.h>
+#import <CoreFoundationKit/CoreFoundationKit.h>
 #import <FoundationKit/FoundationKit.h>
 #import <ObjectiveCKit/ObjectiveCKit.h>
 
@@ -58,6 +59,9 @@ C_ASSUME_NONNULL_BEGIN
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
        textContent:(FoundationString*)textContent;
+
++ (CoreFoundationSize)measureTextSize:(FoundationString*)text
+                            styleText:(FoundationString*)styleText;
 
 @end
 

@@ -66,6 +66,31 @@ export function JavaScriptCoreWindowGetHeight() {
   return window.innerHeight
 }
 
+export function JavaScriptCoreMeasureTextSize(
+  textBuffer,
+  textBufferCount,
+  styleTextBuffer,
+  styleTextBufferCount,
+  result
+) {
+  const element = document.createElement("div")
+  element.textContent = readString(textBuffer, textBufferCount)
+  element.style.cssText = "position:absolute; " +
+                          "visibility:hidden; " +
+                          "pointer-events:none; " +
+                          "white-space: pre; " +
+                          readString(styleTextBuffer, styleTextBufferCount)
+  document.body.appendChild(element)
+
+  const { width, height } = element.getBoundingClientRect()
+
+  const memoryView = new Float32Array(_memory.buffer)
+  memoryView[result / 4] = width
+  memoryView[result / 4 + 1] = height
+
+  element.remove()
+}
+
 export function JavaScriptCoreNodeInitializeButtonNode() {
   return JavaScriptCoreNodeInitialize("button")
 }
@@ -81,31 +106,6 @@ export function JavaScriptCoreNodeInitializeParagraphNode() {
 export function JavaScriptCoreNodeInitializeSpanNode() {
   return JavaScriptCoreNodeInitialize("span")
 }
-
-//export function JavaScriptBridge_MeasureTextSize(
-//  textString,
-//  textStringCount,
-//  styleTextString,
-//  styleTextStringCount,
-//  result
-//) {
-//  const element = document.createElement("div")
-//  element.textContent = readString(textString, textStringCount)
-//  element.style.cssText = "position:absolute; " +
-//                          "visibility:hidden; " +
-//                          "pointer-events:none; " +
-//                          "white-space: pre; " +
-//                          readString(styleTextString, styleTextStringCount)
-//  document.body.appendChild(element)
-//
-//  const { width, height } = element.getBoundingClientRect()
-//
-//  const memoryView = new Float64Array(_memory.buffer)
-//  memoryView[result / 8] = width
-//  memoryView[result / 8 + 1] = height
-//
-//  element.remove()
-//}
 
 export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
   const node = getNode(nodeID)
