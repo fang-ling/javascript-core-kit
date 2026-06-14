@@ -36,6 +36,11 @@ extern void JavaScriptCoreNodeAddSubnode(
   CUnsignedInteger32 subnodeID
 );
 
+extern void JavaScriptCoreNodeRemoveFromSupernode(
+  CUnsignedInteger32 supernodeID,
+  CUnsignedInteger32 nodeID
+);
+
 extern void JavaScriptCoreNodeUpdateStyleProperty(
   CUnsignedInteger32 nodeID,
   CInteger32* propertyBuffer,
@@ -128,6 +133,11 @@ extern void JavaScriptCoreMeasureTextSize(
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID {
   JavaScriptCoreNodeAddSubnode(nodeID, subnodeID);
+}
+
++ (void)removeFromSupernode:(CUnsignedInteger32)supernodeID
+                    forNode:(CUnsignedInteger32)nodeID {
+  JavaScriptCoreNodeRemoveFromSupernode(supernodeID, nodeID);
 }
 
 + (void)updateNode:(CUnsignedInteger32)nodeID

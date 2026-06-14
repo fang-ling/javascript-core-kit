@@ -50,6 +50,9 @@ C_ASSUME_NONNULL_BEGIN
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID;
 
++ (void)removeFromSupernode:(CUnsignedInteger32)supernodeID
+                    forNode:(CUnsignedInteger32)nodeID;
+
 + (void)updateNode:(CUnsignedInteger32)nodeID
          className:(FoundationString*)className;
 
