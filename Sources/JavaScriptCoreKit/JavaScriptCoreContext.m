@@ -36,6 +36,12 @@ extern void JavaScriptCoreNodeAddSubnode(
   CUnsignedInteger32 subnodeID
 );
 
+extern void JavaScriptCoreNodeInsertSubnodeAtIndex(
+  CUnsignedInteger32 nodeID,
+  CUnsignedInteger32 subnodeID,
+  CInteger index
+);
+
 extern void JavaScriptCoreNodeRemoveFromSupernode(
   CUnsignedInteger32 supernodeID,
   CUnsignedInteger32 nodeID
@@ -84,7 +90,7 @@ extern void JavaScriptCoreMeasureTextSize(
 }
 
 + (CoreFoundationSize)measureTextSize:(FoundationString*)text
-                           styleText:(FoundationString*)styleText {
+                            styleText:(FoundationString*)styleText {
   let textBuffer = (CInteger32*)CMemoryAllocate(
     text.count * sizeof(CInteger32)
   );
@@ -133,6 +139,12 @@ extern void JavaScriptCoreMeasureTextSize(
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID {
   JavaScriptCoreNodeAddSubnode(nodeID, subnodeID);
+}
+
++ (void)insertSubnode:(CUnsignedInteger32)subnodeID
+              atIndex:(CInteger)index
+              forNode:(CUnsignedInteger32)nodeID {
+  JavaScriptCoreNodeInsertSubnodeAtIndex(nodeID, subnodeID, index);
 }
 
 + (void)removeFromSupernode:(CUnsignedInteger32)supernodeID
