@@ -37,6 +37,9 @@ C_ASSUME_NONNULL_BEGIN
 
 @property (class, nonatomic, readonly) CFloatingPoint64 windowHeight;
 
++ (CoreFoundationSize)measureTextSize:(FoundationString*)text
+                            styleText:(FoundationString*)styleText;
+
 + (CUnsignedInteger32)makeButtonNode;
 
 + (CUnsignedInteger32)makeDivisionNode;
@@ -50,6 +53,13 @@ C_ASSUME_NONNULL_BEGIN
 + (void)addSubnode:(CUnsignedInteger32)subnodeID
            forNode:(CUnsignedInteger32)nodeID;
 
++ (void)insertSubnode:(CUnsignedInteger32)subnodeID
+              atIndex:(CInteger)index
+              forNode:(CUnsignedInteger32)nodeID;
+
++ (void)removeFromSupernode:(CUnsignedInteger32)supernodeID
+                    forNode:(CUnsignedInteger32)nodeID;
+
 + (void)updateNode:(CUnsignedInteger32)nodeID
          className:(FoundationString*)className;
 
@@ -59,9 +69,6 @@ C_ASSUME_NONNULL_BEGIN
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
        textContent:(FoundationString*)textContent;
-
-+ (CoreFoundationSize)measureTextSize:(FoundationString*)text
-                            styleText:(FoundationString*)styleText;
 
 @end
 

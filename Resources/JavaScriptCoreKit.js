@@ -114,6 +114,24 @@ export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
   node.appendChild(subnode)
 }
 
+export function JavaScriptCoreNodeInsertSubnodeAtIndex(
+  nodeID,
+  subnodeID,
+  index
+) {
+  const node = getNode(nodeID)
+  const subnode = getNode(subnodeID)
+
+  node.insertBefore(subnode, node.childNodes[index]);
+}
+
+export function JavaScriptCoreNodeRemoveFromSupernode(supernodeID, nodeID) {
+  const supernode = getNode(supernodeID)
+  const node = getNode(nodeID)
+
+  supernode.removeChild(node)
+}
+
 export function JavaScriptCoreNodeUpdateClassName(
   nodeID,
   classNameBuffer,
