@@ -1,8 +1,8 @@
 /*
- *  JavaScriptCoreKit.h
+ *  JavaScriptCoreContext+Private.h
  *  javascript-core-kit
  *
- *  Created by Fang Ling on 2026/4/11.
+ *  Created by Fang Ling on 2026/7/4.
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,12 +17,20 @@
  *  limitations under the License.
  */
 
-#ifndef JavaScriptCoreKit_h
-#define JavaScriptCoreKit_h
+#import "JavaScriptCoreContext.h"
 
-#include <CKit/CKit.h>
+#import <CKit/CKit.h>
+#import <FoundationKit/FoundationKit.h>
 
-#import "../../JavaScriptCoreContext.h"
-#import "../../JavaScriptCoreGlobalObject.h"
+C_ASSUME_NONNULL_BEGIN
 
-#endif /* JavaScriptCoreKit_h */
+@interface JavaScriptCoreContext ()
+
+@property (nonatomic) CInteger fetchIndex;
+
+@property (nonatomic)
+  FoundationMutableDictionary* pendingFetchCompletionHandlers;
+
+@end
+
+C_ASSUME_NONNULL_END

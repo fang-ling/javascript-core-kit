@@ -19,6 +19,8 @@
 
 #import "JavaScriptCoreContext.h"
 
+#import "JavaScriptCoreContext+Private.h"
+
 C_ASSUME_NONNULL_BEGIN
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeButtonNode();
@@ -87,7 +89,29 @@ extern void JavaScriptCoreMeasureTextSize(
   CFloatingPoint* result
 );
 
+static let currentContext = (JavaScriptCoreContext*)nil;
+
 @implementation JavaScriptCoreContext
+
++ (void)initialize {
+  currentContext = [[JavaScriptCoreContext alloc] init];
+}
+
++ (instancetype)currentContext {
+  return currentContext;
+}
+
+- (instancetype)init {
+  if (!(self = [super init])) {
+    return nil;
+  }
+
+  self.fetchIndex = 0;
+  self.pendingFetchCompletionHandlers =
+    [FoundationMutableDictionary makeDictionary];
+
+  return self;
+}
 
 + (CFloatingPoint64)windowWidth {
   return JavaScriptCoreWindowGetWidth();

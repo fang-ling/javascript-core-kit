@@ -22,14 +22,16 @@ let _memory
 let nodes
 let nodeIndex
 let eventListeners
+let textDecoder
 
 function readString(string, count) {
-  const characters = new Uint32Array(
-    _memory.buffer,
-    string,
-    Number(count)
+  return String.fromCodePoint(
+    ...(new Uint32Array(_memory.buffer, string, Number(count)))
   )
-  return String.fromCodePoint(...characters)
+}
+
+function readUTF8String(string, count) {
+  return textDecoder.decode(new Uint8Array(_memory.buffer, string, count))
 }
 
 function getNode(nodeID) {
@@ -56,6 +58,7 @@ export function JavaScriptCoreInitialize(instance, memory) {
   nodes = new Map()
   nodeIndex = 0
   eventListeners = new Map()
+  textDecoder = new TextDecoder("utf-8")
 }
 
 export function JavaScriptCoreWindowGetWidth() {
@@ -126,7 +129,7 @@ export function JavaScriptCoreNodeInsertSubnodeAtIndex(
   const node = getNode(nodeID)
   const subnode = getNode(subnodeID)
 
-  node.insertBefore(subnode, node.childNodes[index]);
+  node.insertBefore(subnode, node.childNodes[index])
 }
 
 export function JavaScriptCoreNodeRemoveFromSupernode(supernodeID, nodeID) {
@@ -199,4 +202,43 @@ export function JavaScriptCoreNodeAddClickEventListener(nodeID) {
 
   eventListeners.get(nodeID).set("click", eventHandler)
   getNode(nodeID)?.addEventListener("click", eventHandler)
+}
+
+export function JavaScriptCoreGlobalObjectFetch(
+  requestID,
+  urlBuffer,
+  urlBufferCount,
+  requestBuffer,
+  requestBufferCount
+) {
+  fetch(
+    readString(urlBuffer, urlBufferCount),
+    JSON.parse(readUTF8String(requestBuffer, requestBufferCount))
+  )
+    .then((response) => {
+      response.arrayBuffer()
+        .then((buffer) => {
+          const data = new Uint8Array(buffer)
+
+          const pointer = _instance.exports.malloc(data.length + 1)
+
+          const memory = new Uint8Array(_instance.exports.memory.buffer)
+          memory.set(data, pointer)
+          memory[pointer + data.length] = 0
+
+          _instance.exports.JavaScriptCoreGlobalObjectFetchDidFinish(
+            requestID,
+            pointer
+          )
+
+          _instance.exports.free(pointer)
+        })
+        .finally(() => {
+          _instance.exports.UIKitDispatchControlEvent(-1, -1)
+        })
+    })
+    .catch((reason) => {
+      console.log(reason)
+      // TODO, also need to dispatch event here
+    })
 }

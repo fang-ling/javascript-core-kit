@@ -33,6 +33,8 @@ C_ASSUME_NONNULL_BEGIN
  */
 @interface JavaScriptCoreContext: ObjectiveCObject
 
+@property (class, nonatomic, readonly) JavaScriptCoreContext* currentContext;
+
 @property (class, nonatomic, readonly) CFloatingPoint64 windowWidth;
 
 @property (class, nonatomic, readonly) CFloatingPoint64 windowHeight;
