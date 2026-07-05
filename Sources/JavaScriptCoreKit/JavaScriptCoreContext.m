@@ -63,6 +63,12 @@ extern void JavaScriptCoreNodeUpdateClassName(
   CInteger classNameBufferCount
 );
 
+extern void JavaScriptCoreNodeUpdateSourceContent(
+  CUnsignedInteger32 nodeID,
+  CInteger32* sourceContentBuffer,
+  CInteger sourceContentBufferCount
+);
+
 extern void JavaScriptCoreNodeUpdateTextContent(
   CUnsignedInteger32 nodeID,
   CInteger32* textContentBuffer,
@@ -175,6 +181,22 @@ extern void JavaScriptCoreMeasureTextSize(
 }
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
+     sourceContent:(FoundationString*)sourceContent {
+  let sourceContentBuffer = (CInteger32*)CMemoryAllocate(
+    sourceContent.count * sizeof(CInteger32)
+  );
+  [sourceContent copyCharacters:sourceContentBuffer];
+
+  JavaScriptCoreNodeUpdateSourceContent(
+    nodeID,
+    sourceContentBuffer,
+    sourceContent.count
+  );
+
+  CMemoryDeallocate(sourceContentBuffer);
+}
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
      styleProperty:(FoundationString*)property
         styleValue:(FoundationString*)value {
   let propertyBuffer = (CInteger32*)CMemoryAllocate(
@@ -195,7 +217,7 @@ extern void JavaScriptCoreMeasureTextSize(
   );
 
   CMemoryDeallocate(propertyBuffer);
-  CMemoryDeallocate(propertyBuffer);
+  CMemoryDeallocate(valueBuffer);
 }
 
 + (void)updateNode:(CUnsignedInteger32)nodeID

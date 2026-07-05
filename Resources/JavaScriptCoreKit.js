@@ -149,6 +149,19 @@ export function JavaScriptCoreNodeUpdateClassName(
   node.className = readString(classNameBuffer, classNameBufferCount)
 }
 
+export function JavaScriptCoreNodeUpdateSourceContent(
+  nodeID,
+  sourceContentBuffer,
+  sourceContentBufferCount
+) {
+  const node = getNode(nodeID)
+  if (!node) {
+    return
+  }
+
+  node.src = readString(sourceContentBuffer, sourceContentBufferCount)
+}
+
 export function JavaScriptCoreNodeUpdateStyleProperty(
   nodeID,
   propertyBuffer,
