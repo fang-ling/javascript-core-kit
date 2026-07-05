@@ -25,6 +25,8 @@ extern CUnsignedInteger32 JavaScriptCoreNodeInitializeButtonNode();
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeDivisionNode();
 
+extern CUnsignedInteger32 JavaScriptCoreNodeInitializeImageNode();
+
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeParagraphNode();
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeSpanNode();
@@ -122,6 +124,10 @@ extern void JavaScriptCoreMeasureTextSize(
 
 + (CUnsignedInteger32)makeDivisionNode {
   return JavaScriptCoreNodeInitializeDivisionNode();
+}
+
++ (CUnsignedInteger32)makeImageNode {
+  return JavaScriptCoreNodeInitializeImageNode();
 }
 
 + (CUnsignedInteger32)makeParagraphNode {

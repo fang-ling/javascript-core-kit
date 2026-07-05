@@ -99,6 +99,10 @@ export function JavaScriptCoreNodeInitializeDivisionNode() {
   return JavaScriptCoreNodeInitialize("div")
 }
 
+export function JavaScriptCoreNodeInitializeImageNode() {
+  return JavaScriptCoreNodeInitialize("img")
+}
+
 export function JavaScriptCoreNodeInitializeParagraphNode() {
   return JavaScriptCoreNodeInitialize("p")
 }

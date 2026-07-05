@@ -44,6 +44,8 @@ C_ASSUME_NONNULL_BEGIN
 
 + (CUnsignedInteger32)makeDivisionNode;
 
++ (CUnsignedInteger32)makeImageNode;
+
 + (CUnsignedInteger32)makeParagraphNode;
 
 + (CUnsignedInteger32)makeSpanNode;
