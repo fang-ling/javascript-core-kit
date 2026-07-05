@@ -33,6 +33,8 @@ C_ASSUME_NONNULL_BEGIN
  */
 @interface JavaScriptCoreContext: ObjectiveCObject
 
+@property (class, nonatomic, readonly) JavaScriptCoreContext* currentContext;
+
 @property (class, nonatomic, readonly) CFloatingPoint64 windowWidth;
 
 @property (class, nonatomic, readonly) CFloatingPoint64 windowHeight;
@@ -43,6 +45,8 @@ C_ASSUME_NONNULL_BEGIN
 + (CUnsignedInteger32)makeButtonNode;
 
 + (CUnsignedInteger32)makeDivisionNode;
+
++ (CUnsignedInteger32)makeImageNode;
 
 + (CUnsignedInteger32)makeParagraphNode;
 
@@ -62,6 +66,9 @@ C_ASSUME_NONNULL_BEGIN
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
          className:(FoundationString*)className;
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
+     sourceContent:(FoundationString*)sourceContent;
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
      styleProperty:(FoundationString*)property

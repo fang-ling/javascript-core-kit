@@ -19,11 +19,15 @@
 
 #import "JavaScriptCoreContext.h"
 
+#import "JavaScriptCoreContext+Private.h"
+
 C_ASSUME_NONNULL_BEGIN
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeButtonNode();
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeDivisionNode();
+
+extern CUnsignedInteger32 JavaScriptCoreNodeInitializeImageNode();
 
 extern CUnsignedInteger32 JavaScriptCoreNodeInitializeParagraphNode();
 
@@ -61,6 +65,12 @@ extern void JavaScriptCoreNodeUpdateClassName(
   CInteger classNameBufferCount
 );
 
+extern void JavaScriptCoreNodeUpdateSourceContent(
+  CUnsignedInteger32 nodeID,
+  CInteger32* sourceContentBuffer,
+  CInteger sourceContentBufferCount
+);
+
 extern void JavaScriptCoreNodeUpdateTextContent(
   CUnsignedInteger32 nodeID,
   CInteger32* textContentBuffer,
@@ -79,7 +89,29 @@ extern void JavaScriptCoreMeasureTextSize(
   CFloatingPoint* result
 );
 
+static let currentContext = (JavaScriptCoreContext*)nil;
+
 @implementation JavaScriptCoreContext
+
++ (void)initialize {
+  currentContext = [[JavaScriptCoreContext alloc] init];
+}
+
++ (instancetype)currentContext {
+  return currentContext;
+}
+
+- (instancetype)init {
+  if (!(self = [super init])) {
+    return nil;
+  }
+
+  self.fetchIndex = 0;
+  self.pendingFetchCompletionHandlers =
+    [FoundationMutableDictionary makeDictionary];
+
+  return self;
+}
 
 + (CFloatingPoint64)windowWidth {
   return JavaScriptCoreWindowGetWidth();
@@ -122,6 +154,10 @@ extern void JavaScriptCoreMeasureTextSize(
 
 + (CUnsignedInteger32)makeDivisionNode {
   return JavaScriptCoreNodeInitializeDivisionNode();
+}
+
++ (CUnsignedInteger32)makeImageNode {
+  return JavaScriptCoreNodeInitializeImageNode();
 }
 
 + (CUnsignedInteger32)makeParagraphNode {
@@ -169,6 +205,22 @@ extern void JavaScriptCoreMeasureTextSize(
 }
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
+     sourceContent:(FoundationString*)sourceContent {
+  let sourceContentBuffer = (CInteger32*)CMemoryAllocate(
+    sourceContent.count * sizeof(CInteger32)
+  );
+  [sourceContent copyCharacters:sourceContentBuffer];
+
+  JavaScriptCoreNodeUpdateSourceContent(
+    nodeID,
+    sourceContentBuffer,
+    sourceContent.count
+  );
+
+  CMemoryDeallocate(sourceContentBuffer);
+}
+
++ (void)updateNode:(CUnsignedInteger32)nodeID
      styleProperty:(FoundationString*)property
         styleValue:(FoundationString*)value {
   let propertyBuffer = (CInteger32*)CMemoryAllocate(
@@ -189,7 +241,7 @@ extern void JavaScriptCoreMeasureTextSize(
   );
 
   CMemoryDeallocate(propertyBuffer);
-  CMemoryDeallocate(propertyBuffer);
+  CMemoryDeallocate(valueBuffer);
 }
 
 + (void)updateNode:(CUnsignedInteger32)nodeID
