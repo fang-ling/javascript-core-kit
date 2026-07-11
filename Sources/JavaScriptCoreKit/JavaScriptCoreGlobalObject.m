@@ -64,9 +64,7 @@ void JavaScriptCoreGlobalObjectFetchDidFinish(CInteger requestID, void* data) {
   context.fetchIndex += 1;
   context.pendingFetchCompletionHandlers[@(context.fetchIndex)] = handler;
 
-  let urlBuffer = (CInteger32*)CMemoryAllocate(
-    url.count * sizeof(CInteger32)
-  );
+  let urlBuffer = (CInteger32*)CMemoryAllocate(url.count, sizeof(CInteger32));
   [url copyCharacters:urlBuffer];
 
   if (!request) {

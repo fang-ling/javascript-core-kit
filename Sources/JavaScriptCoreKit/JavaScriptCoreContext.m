@@ -123,11 +123,10 @@ static let currentContext = (JavaScriptCoreContext*)nil;
 
 + (CoreFoundationSize)measureTextSize:(FoundationString*)text
                             styleText:(FoundationString*)styleText {
-  let textBuffer = (CInteger32*)CMemoryAllocate(
-    text.count * sizeof(CInteger32)
-  );
+  let textBuffer = (CInteger32*)CMemoryAllocate(text.count, sizeof(CInteger32));
   let styleTextBuffer = (CInteger32*)CMemoryAllocate(
-    styleText.count * sizeof(CInteger32)
+    styleText.count,
+    sizeof(CInteger32)
   );
   [text copyCharacters:textBuffer];
   [styleText copyCharacters:styleTextBuffer];
@@ -191,7 +190,8 @@ static let currentContext = (JavaScriptCoreContext*)nil;
 + (void)updateNode:(CUnsignedInteger32)nodeID
          className:(FoundationString*)className {
   let classNameBuffer = (CInteger32*)CMemoryAllocate(
-    className.count * sizeof(CInteger32)
+    className.count,
+    sizeof(CInteger32)
   );
   [className copyCharacters:classNameBuffer];
 
@@ -207,7 +207,8 @@ static let currentContext = (JavaScriptCoreContext*)nil;
 + (void)updateNode:(CUnsignedInteger32)nodeID
      sourceContent:(FoundationString*)sourceContent {
   let sourceContentBuffer = (CInteger32*)CMemoryAllocate(
-    sourceContent.count * sizeof(CInteger32)
+    sourceContent.count,
+    sizeof(CInteger32)
   );
   [sourceContent copyCharacters:sourceContentBuffer];
 
@@ -224,10 +225,12 @@ static let currentContext = (JavaScriptCoreContext*)nil;
      styleProperty:(FoundationString*)property
         styleValue:(FoundationString*)value {
   let propertyBuffer = (CInteger32*)CMemoryAllocate(
-    property.count * sizeof(CInteger32)
+    property.count,
+    sizeof(CInteger32)
   );
   let valueBuffer = (CInteger32*)CMemoryAllocate(
-    value.count * sizeof(CInteger32)
+    value.count,
+    sizeof(CInteger32)
   );
   [property copyCharacters:propertyBuffer];
   [value copyCharacters:valueBuffer];
@@ -247,7 +250,8 @@ static let currentContext = (JavaScriptCoreContext*)nil;
 + (void)updateNode:(CUnsignedInteger32)nodeID
        textContent:(FoundationString*)textContent {
   let textContentBuffer = (CInteger32*)CMemoryAllocate(
-    textContent.count * sizeof(CInteger32)
+    textContent.count,
+    sizeof(CInteger32)
   );
   [textContent copyCharacters:textContentBuffer];
 
