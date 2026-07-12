@@ -49,6 +49,10 @@ function JavaScriptCoreNodeInitialize(nodeType) {
   node.className = "view"
   nodes.set(nodeIndex, node)
 
+  if (nodeType === "img") {
+    node.loading = "lazy"
+  }
+
   return nodeIndex
 }
 
@@ -94,24 +98,79 @@ export function JavaScriptCoreMeasureTextSize(
   element.remove()
 }
 
-export function JavaScriptCoreNodeInitializeButtonNode() {
-  return JavaScriptCoreNodeInitialize("button")
+export function JavaScriptCoreNodeInitializeWithType(type) {
+  switch (type) {
+    case 0: return JavaScriptCoreNodeInitialize("button")
+    case 1: return JavaScriptCoreNodeInitialize("div")
+    case 2: return JavaScriptCoreNodeInitialize("img")
+    case 3: return JavaScriptCoreNodeInitialize("p")
+    case 4: return JavaScriptCoreNodeInitialize("span")
+  }
 }
 
-export function JavaScriptCoreNodeInitializeDivisionNode() {
-  return JavaScriptCoreNodeInitialize("div")
+export function JavaScriptCoreNodeSetClassName(
+  nodeID,
+  classNameBuffer,
+  classNameBufferCount
+) {
+  const node = getNode(nodeID)
+  if (!node) {
+    return
+  }
+
+  node.className = readString(classNameBuffer, classNameBufferCount)
 }
 
-export function JavaScriptCoreNodeInitializeImageNode() {
-  return JavaScriptCoreNodeInitialize("img")
+export function JavaScriptCoreNodeSetSourceContent(
+  nodeID,
+  sourceContentBuffer,
+  sourceContentBufferCount
+) {
+  const node = getNode(nodeID)
+  if (!node) {
+    return
+  }
+
+  node.src = readString(sourceContentBuffer, sourceContentBufferCount)
 }
 
-export function JavaScriptCoreNodeInitializeParagraphNode() {
-  return JavaScriptCoreNodeInitialize("p")
+export function JavaScriptCoreNodeSetStyleProperty(
+  nodeID,
+  propertyBuffer,
+  propertyBufferCount,
+  valueBuffer,
+  valueBufferCount
+) {
+  getNode(nodeID)?.style.setProperty(
+    readString(propertyBuffer, propertyBufferCount),
+    readString(valueBuffer, valueBufferCount)
+  )
 }
 
-export function JavaScriptCoreNodeInitializeSpanNode() {
-  return JavaScriptCoreNodeInitialize("span")
+export function JavaScriptCoreNodeSetTextContent(
+  nodeID,
+  textContentBuffer,
+  textContentBufferCount
+) {
+  const node = getNode(nodeID)
+  if (!node) {
+    return
+  }
+
+  node.textContent = readString(textContentBuffer, textContentBufferCount)
+}
+
+export function JavaScriptCoreNodeAddClickEventListener(nodeID) {
+  if (!eventListeners.has(nodeID)) {
+    eventListeners.set(nodeID, new Map())
+  }
+
+  const eventHandler = () => {
+    _instance.exports.UIKitDispatchControlEvent(nodeID, 1)
+  }
+
+  eventListeners.get(nodeID).set("click", eventHandler)
+  getNode(nodeID)?.addEventListener("click", eventHandler)
 }
 
 export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
@@ -137,71 +196,6 @@ export function JavaScriptCoreNodeRemoveFromSupernode(supernodeID, nodeID) {
   const node = getNode(nodeID)
 
   supernode.removeChild(node)
-}
-
-export function JavaScriptCoreNodeUpdateClassName(
-  nodeID,
-  classNameBuffer,
-  classNameBufferCount
-) {
-  const node = getNode(nodeID)
-  if (!node) {
-    return
-  }
-
-  node.className = readString(classNameBuffer, classNameBufferCount)
-}
-
-export function JavaScriptCoreNodeUpdateSourceContent(
-  nodeID,
-  sourceContentBuffer,
-  sourceContentBufferCount
-) {
-  const node = getNode(nodeID)
-  if (!node) {
-    return
-  }
-
-  node.src = readString(sourceContentBuffer, sourceContentBufferCount)
-}
-
-export function JavaScriptCoreNodeUpdateStyleProperty(
-  nodeID,
-  propertyBuffer,
-  propertyBufferCount,
-  valueBuffer,
-  valueBufferCount
-) {
-  getNode(nodeID)?.style.setProperty(
-    readString(propertyBuffer, propertyBufferCount),
-    readString(valueBuffer, valueBufferCount)
-  )
-}
-
-export function JavaScriptCoreNodeUpdateTextContent(
-  nodeID,
-  textContentBuffer,
-  textContentBufferCount
-) {
-  const node = getNode(nodeID)
-  if (!node) {
-    return
-  }
-
-  node.textContent = readString(textContentBuffer, textContentBufferCount)
-}
-
-export function JavaScriptCoreNodeAddClickEventListener(nodeID) {
-  if (!eventListeners.has(nodeID)) {
-    eventListeners.set(nodeID, new Map())
-  }
-
-  const eventHandler = () => {
-    _instance.exports.UIKitDispatchControlEvent(nodeID, 1)
-  }
-
-  eventListeners.get(nodeID).set("click", eventHandler)
-  getNode(nodeID)?.addEventListener("click", eventHandler)
 }
 
 export function JavaScriptCoreGlobalObjectFetch(

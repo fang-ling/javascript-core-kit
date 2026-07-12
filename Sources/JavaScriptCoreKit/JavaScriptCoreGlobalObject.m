@@ -35,16 +35,17 @@ static let defaultObject = (JavaScriptCoreGlobalObject*)nil;
 
 void JavaScriptCoreGlobalObjectFetchDidFinish(CInteger requestID, void* data) {
   let context = JavaScriptCoreContext.currentContext;
+  let key = @(requestID);
 
   void (^completionHandler)(FoundationData*) =
-    context.pendingFetchCompletionHandlers[@(requestID)];
+    context.pendingFetchCompletionHandlers[key];
 
   let jsonData = [FoundationData makeDataWithBytes:data
                                              count:CStringGetCount(data)];
 
   completionHandler(jsonData);
 
-  /* TODO: remove the completionHandler from pending handlers. */
+  [context.pendingFetchCompletionHandlers removeObjectForKey:key];
 }
 
 @implementation JavaScriptCoreGlobalObject
@@ -64,9 +65,7 @@ void JavaScriptCoreGlobalObjectFetchDidFinish(CInteger requestID, void* data) {
   context.fetchIndex += 1;
   context.pendingFetchCompletionHandlers[@(context.fetchIndex)] = handler;
 
-  let urlBuffer = (CInteger32*)CMemoryAllocate(
-    url.count * sizeof(CInteger32)
-  );
+  let urlBuffer = (CInteger32*)CMemoryAllocate(url.count, sizeof(CInteger32));
   [url copyCharacters:urlBuffer];
 
   if (!request) {

@@ -42,41 +42,6 @@ C_ASSUME_NONNULL_BEGIN
 + (CoreFoundationSize)measureTextSize:(FoundationString*)text
                             styleText:(FoundationString*)styleText;
 
-+ (CUnsignedInteger32)makeButtonNode;
-
-+ (CUnsignedInteger32)makeDivisionNode;
-
-+ (CUnsignedInteger32)makeImageNode;
-
-+ (CUnsignedInteger32)makeParagraphNode;
-
-+ (CUnsignedInteger32)makeSpanNode;
-
-+ (void)addClickEventListenerForNode:(CUnsignedInteger32)nodeID;
-
-+ (void)addSubnode:(CUnsignedInteger32)subnodeID
-           forNode:(CUnsignedInteger32)nodeID;
-
-+ (void)insertSubnode:(CUnsignedInteger32)subnodeID
-              atIndex:(CInteger)index
-              forNode:(CUnsignedInteger32)nodeID;
-
-+ (void)removeFromSupernode:(CUnsignedInteger32)supernodeID
-                    forNode:(CUnsignedInteger32)nodeID;
-
-+ (void)updateNode:(CUnsignedInteger32)nodeID
-         className:(FoundationString*)className;
-
-+ (void)updateNode:(CUnsignedInteger32)nodeID
-     sourceContent:(FoundationString*)sourceContent;
-
-+ (void)updateNode:(CUnsignedInteger32)nodeID
-     styleProperty:(FoundationString*)property
-        styleValue:(FoundationString*)value;
-
-+ (void)updateNode:(CUnsignedInteger32)nodeID
-       textContent:(FoundationString*)textContent;
-
 @end
 
 C_ASSUME_NONNULL_END

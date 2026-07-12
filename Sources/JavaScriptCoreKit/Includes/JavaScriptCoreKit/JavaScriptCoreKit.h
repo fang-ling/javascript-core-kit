@@ -24,5 +24,6 @@
 
 #import "../../JavaScriptCoreContext.h"
 #import "../../JavaScriptCoreGlobalObject.h"
+#import "../../JavaScriptCoreNode.h"
 
 #endif /* JavaScriptCoreKit_h */
