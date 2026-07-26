@@ -54,6 +54,8 @@ typedef enum JavaScriptCoreNodeEventType {
 
 - (void)addEventListenerWithType:(JavaScriptCoreNodeEventType)eventType;
 
+- (void)removeEventListenerWithType:(JavaScriptCoreNodeEventType)eventType;
+
 - (void)addSubnode:(JavaScriptCoreNode*)node;
 
 - (void)insertSubnode:(JavaScriptCoreNode*)node atIndex:(CInteger)index;

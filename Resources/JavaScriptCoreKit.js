@@ -187,6 +187,17 @@ export function JavaScriptCoreNodeAddEventListener(nodeID, type) {
   getNode(nodeID)?.addEventListener(typeName, eventHandler)
 }
 
+export function JavaScriptCoreNodeRemoveEventListener(nodeID, type) {
+  let typeName = getEventTypeName(type)
+
+  getNode(nodeID)?.removeEventListener(typeName, eventListeners.get(nodeID).get(typeName))
+  eventListeners.get(nodeID).delete(typeName)
+
+  if (eventListeners.get(nodeID).size <= 0) {
+    eventListeners.delete(nodeID)
+  }
+}
+
 export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
   const node = getNode(nodeID)
   const subnode = getNode(subnodeID)

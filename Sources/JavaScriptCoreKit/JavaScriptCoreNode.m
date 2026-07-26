@@ -51,6 +51,8 @@ extern void JavaScriptCoreNodeSetTextContent(
 
 extern void JavaScriptCoreNodeAddEventListener(CUnsignedInteger32 nodeID, CInteger type);
 
+extern void JavaScriptCoreNodeRemoveEventListener(CUnsignedInteger32 nodeID, CInteger type);
+
 extern void JavaScriptCoreNodeAddSubnode(
   CUnsignedInteger32 nodeID,
   CUnsignedInteger32 subnodeID
@@ -171,6 +173,10 @@ static let documentNode = (JavaScriptCoreNode*)nil;
 
 - (void)addEventListenerWithType:(JavaScriptCoreNodeEventType)eventType {
   JavaScriptCoreNodeAddEventListener(self.id, eventType);
+}
+
+- (void)removeEventListenerWithType:(JavaScriptCoreNodeEventType)eventType {
+  JavaScriptCoreNodeRemoveEventListener(self.id, eventType);
 }
 
 - (void)addSubnode:(JavaScriptCoreNode*)node {
