@@ -4,17 +4,14 @@
 //
 //  Created by Fang Ling on 2026/4/4.
 //
-//  Licensed under the Apache License, Version 2.0 (the "License");
-//  you may not use this file except in compliance with the License.
+//  Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
 //  You may obtain a copy of the License at
 //
 //    http://www.apache.org/licenses/LICENSE-2.0
 //
-//  Unless required by applicable law or agreed to in writing, software
-//  distributed under the License is distributed on an "AS IS" BASIS,
+//  Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
 //  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-//  See the License for the specific language governing permissions and
-//  limitations under the License.
+//  See the License for the specific language governing permissions and limitations under the License.
 //
 
 let _instance
@@ -25,9 +22,7 @@ let eventListeners
 let textDecoder
 
 function readString(string, count) {
-  return String.fromCodePoint(
-    ...(new Uint32Array(_memory.buffer, string, Number(count)))
-  )
+  return String.fromCodePoint(...(new Uint32Array(_memory.buffer, string, Number(count))))
 }
 
 function readUTF8String(string, count) {
@@ -76,20 +71,10 @@ export function JavaScriptCoreWindowGetHeight() {
   return window.innerHeight
 }
 
-export function JavaScriptCoreMeasureTextSize(
-  textBuffer,
-  textBufferCount,
-  styleTextBuffer,
-  styleTextBufferCount,
-  result
-) {
+export function JavaScriptCoreMeasureTextSize(textBuffer, textBufferCount, styleTextBuffer, styleTextBufferCount, result) {
   const element = document.createElement("div")
   element.textContent = readString(textBuffer, textBufferCount)
-  element.style.cssText = "position:absolute; " +
-                          "visibility:hidden; " +
-                          "pointer-events:none; " +
-                          "white-space: pre; " +
-                          readString(styleTextBuffer, styleTextBufferCount)
+  element.style.cssText = `position:absolute; visibility:hidden; pointer-events:none; white-space: pre; ${readString(styleTextBuffer, styleTextBufferCount)}`
   document.body.appendChild(element)
 
   const { width, height } = element.getBoundingClientRect()
@@ -111,11 +96,7 @@ export function JavaScriptCoreNodeInitializeWithType(type) {
   }
 }
 
-export function JavaScriptCoreNodeSetClassName(
-  nodeID,
-  classNameBuffer,
-  classNameBufferCount
-) {
+export function JavaScriptCoreNodeSetClassName(nodeID, classNameBuffer, classNameBufferCount) {
   const node = getNode(nodeID)
   if (!node) {
     return
@@ -124,11 +105,7 @@ export function JavaScriptCoreNodeSetClassName(
   node.className = readString(classNameBuffer, classNameBufferCount)
 }
 
-export function JavaScriptCoreNodeSetSourceContent(
-  nodeID,
-  sourceContentBuffer,
-  sourceContentBufferCount
-) {
+export function JavaScriptCoreNodeSetSourceContent(nodeID, sourceContentBuffer, sourceContentBufferCount) {
   const node = getNode(nodeID)
   if (!node) {
     return
@@ -137,24 +114,14 @@ export function JavaScriptCoreNodeSetSourceContent(
   node.src = readString(sourceContentBuffer, sourceContentBufferCount)
 }
 
-export function JavaScriptCoreNodeSetStyleProperty(
-  nodeID,
-  propertyBuffer,
-  propertyBufferCount,
-  valueBuffer,
-  valueBufferCount
-) {
+export function JavaScriptCoreNodeSetStyleProperty(nodeID, propertyBuffer, propertyBufferCount, valueBuffer, valueBufferCount) {
   getNode(nodeID)?.style.setProperty(
     readString(propertyBuffer, propertyBufferCount),
     readString(valueBuffer, valueBufferCount)
   )
 }
 
-export function JavaScriptCoreNodeSetTextContent(
-  nodeID,
-  textContentBuffer,
-  textContentBufferCount
-) {
+export function JavaScriptCoreNodeSetTextContent(nodeID, textContentBuffer, textContentBufferCount) {
   const node = getNode(nodeID)
   if (!node) {
     return
@@ -201,11 +168,7 @@ export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {
   node.appendChild(subnode)
 }
 
-export function JavaScriptCoreNodeInsertSubnodeAtIndex(
-  nodeID,
-  subnodeID,
-  index
-) {
+export function JavaScriptCoreNodeInsertSubnodeAtIndex(nodeID, subnodeID, index) {
   const node = getNode(nodeID)
   const subnode = getNode(subnodeID)
 
@@ -219,17 +182,8 @@ export function JavaScriptCoreNodeRemoveFromSupernode(supernodeID, nodeID) {
   supernode.removeChild(node)
 }
 
-export function JavaScriptCoreGlobalObjectFetch(
-  requestID,
-  urlBuffer,
-  urlBufferCount,
-  requestBuffer,
-  requestBufferCount
-) {
-  fetch(
-    readString(urlBuffer, urlBufferCount),
-    JSON.parse(readUTF8String(requestBuffer, requestBufferCount))
-  )
+export function JavaScriptCoreGlobalObjectFetch(requestID, urlBuffer, urlBufferCount, requestBuffer, requestBufferCount) {
+  fetch(readString(urlBuffer, urlBufferCount), JSON.parse(readUTF8String(requestBuffer, requestBufferCount)))
     .then((response) => {
       response.arrayBuffer()
         .then((buffer) => {
@@ -241,10 +195,7 @@ export function JavaScriptCoreGlobalObjectFetch(
           memory.set(data, pointer)
           memory[pointer + data.length] = 0
 
-          _instance.exports.JavaScriptCoreGlobalObjectFetchDidFinish(
-            requestID,
-            pointer
-          )
+          _instance.exports.JavaScriptCoreGlobalObjectFetchDidFinish(requestID, pointer)
 
           _instance.exports.free(pointer)
         })
