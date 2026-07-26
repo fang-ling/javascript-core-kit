@@ -49,7 +49,7 @@ extern void JavaScriptCoreNodeSetTextContent(
   CUnsignedInteger64 textContentBufferCount
 );
 
-extern void JavaScriptCoreNodeAddClickEventListener(CUnsignedInteger32 nodeID);
+extern void JavaScriptCoreNodeAddEventListener(CUnsignedInteger32 nodeID, CInteger type);
 
 extern void JavaScriptCoreNodeAddSubnode(
   CUnsignedInteger32 nodeID,
@@ -169,8 +169,8 @@ static let documentNode = (JavaScriptCoreNode*)nil;
   CMemoryDeallocate(textContentBuffer);
 }
 
-- (void)addClickEventListener {
-  JavaScriptCoreNodeAddClickEventListener(self.id);
+- (void)addEventListenerWithType:(JavaScriptCoreNodeEventType)eventType {
+  JavaScriptCoreNodeAddEventListener(self.id, eventType);
 }
 
 - (void)addSubnode:(JavaScriptCoreNode*)node {

@@ -42,6 +42,13 @@ function getNode(nodeID) {
   return nodes.get(nodeID)
 }
 
+function getEventTypeName(type) {
+  switch (type) {
+    case 1: return "click"
+    case 16384: return "scroll"
+  }
+}
+
 function JavaScriptCoreNodeInitialize(nodeType) {
   nodeIndex += 1
 
@@ -160,17 +167,24 @@ export function JavaScriptCoreNodeSetTextContent(
   node.textContent = readString(textContentBuffer, textContentBufferCount)
 }
 
-export function JavaScriptCoreNodeAddClickEventListener(nodeID) {
+export function JavaScriptCoreNodeAddEventListener(nodeID, type) {
   if (!eventListeners.has(nodeID)) {
     eventListeners.set(nodeID, new Map())
   }
 
+  const typeName = getEventTypeName(type)
+
   const eventHandler = () => {
-    _instance.exports.UIKitDispatchControlEvent(nodeID, 1)
+    if (type === 16384) {
+      const node = getNode(nodeID)
+      _instance.exports.UIKitDispatchScrollEvent(nodeID, node.scrollLeft, node.scrollTop)
+    } else {
+      _instance.exports.UIKitDispatchControlEvent(nodeID, 1)
+    }
   }
 
-  eventListeners.get(nodeID).set("click", eventHandler)
-  getNode(nodeID)?.addEventListener("click", eventHandler)
+  eventListeners.get(nodeID).set(typeName, eventHandler)
+  getNode(nodeID)?.addEventListener(typeName, eventHandler)
 }
 
 export function JavaScriptCoreNodeAddSubnode(nodeID, subnodeID) {

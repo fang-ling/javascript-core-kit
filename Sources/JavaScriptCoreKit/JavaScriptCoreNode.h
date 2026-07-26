@@ -30,6 +30,11 @@ typedef enum JavaScriptCoreNodeType {
   kJavaScriptCoreNodeTypeSpan = 4
 } JavaScriptCoreNodeType;
 
+typedef enum JavaScriptCoreNodeEventType {
+  kJavaScriptCoreNodeEventTypeClick = 1,
+  kJavaScriptCoreNodeEventTypeScroll = 16384
+} JavaScriptCoreNodeEventType;
+
 @interface JavaScriptCoreNode: ObjectiveCObject
 
 @property (class, nonatomic, readonly) JavaScriptCoreNode* documentNode;
@@ -47,7 +52,7 @@ typedef enum JavaScriptCoreNodeType {
 
 - (void)setTextContent:(FoundationString*)textContent;
 
-- (void)addClickEventListener;
+- (void)addEventListenerWithType:(JavaScriptCoreNodeEventType)eventType;
 
 - (void)addSubnode:(JavaScriptCoreNode*)node;
 
