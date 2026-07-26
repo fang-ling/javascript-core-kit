@@ -56,10 +56,6 @@ function JavaScriptCoreNodeInitialize(nodeType) {
   node.className = "view"
   nodes.set(nodeIndex, node)
 
-  if (nodeType === "img") {
-    node.loading = "lazy"
-  }
-
   return nodeIndex
 }
 
